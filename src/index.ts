@@ -1,5 +1,5 @@
-const { TezosToolkit } = require("@taquito/taquito");
-const axios = require("axios");
+import { TezosToolkit } from "@taquito/taquito";
+import axios from "axios";
 
 // Fonction pour récupérer les NFTs d'un wallet
 const WALLET_ADDRESS = "tz1eQzGZXy36xx6xDT1Xp6dUdHS2dXowKdCq";
@@ -18,7 +18,7 @@ const getWalletNFTs = async () => {
   return walletData;
 };
 
-const verifyOwnership = async (walletAddress, contractAddress) => {
+const verifyOwnership = async (walletAddress: string, contractAddress: string) => {
   const Tezos = new TezosToolkit("https://rpc.tzbeta.net/");
   const lastBlock = (await Tezos.rpc.getBlock()).header.level;
   
@@ -28,11 +28,11 @@ const verifyOwnership = async (walletAddress, contractAddress) => {
   return walletData;
 };
 
-// getWalletNFTs()
-//   .then((data) => {
-//     console.log(data);
-//   })
-//   .catch((err) => console.log(err.message));
+getWalletNFTs()
+  .then((data) => {
+    console.log(data);
+  })
+  .catch((err) => console.log(err.message));
 
 verifyOwnership(WALLET_ADDRESS, "KT1NVvPsNDChrLRH5K2cy6Sc9r1uuUwdiZQd")
   .then(({ data }) => {
