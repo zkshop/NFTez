@@ -1,0 +1,28 @@
+name: Publish to NPM
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Build project
+        run: yarn run build
+
+      - name: Login to NPM
+        run: npm login --registry=https://registry.npmjs.org/ --scope=@example --always-auth --_auth=$AUTH_TOKEN
+        env:
+          AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+
+      - name: Publish to NPM
+        run: npm publish
