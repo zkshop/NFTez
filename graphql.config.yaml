@@ -1,2 +1,3 @@
-schema: "graphql.schema"
+schema: "graphql.schema.json"
 documents: "src/teztok/documents/**/*.gql"
+exclude: "src/teztok/generated.ts"

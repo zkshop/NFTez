@@ -1,9 +1,10 @@
 {
   "name": "test-tezos",
-  "version": "1.0.0",
-  "main": "index.js",
+  "version": "1.0.1",
+  "main": "dist/index.js",
   "scripts": {
-    "dev": "ts-node src/index.ts",
+    "dev": "ts-node src/test.ts",
+    "build": "tsc",
     "start": "node index.js",
     "generate:graphql": "graphql-codegen --config codegen.ts && plop update-graphql-code"
   },

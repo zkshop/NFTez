@@ -4614,6 +4614,13 @@ export enum Tzprofiles_Select_Column {
   Website = 'website'
 }
 
+export type GetNftCollectionQueryVariables = Exact<{
+  contractAddress: Scalars['String'];
+}>;
+
+
+export type GetNftCollectionQuery = { __typename?: 'query_root', tokens: Array<{ __typename?: 'tokens', fa2_address: string, name?: string | null }> };
+
 export type GetNfTsQueryVariables = Exact<{
   walletAddress: Scalars['String'];
 }>;
@@ -4621,7 +4628,23 @@ export type GetNfTsQueryVariables = Exact<{
 
 export type GetNfTsQuery = { __typename?: 'query_root', holdings: Array<{ __typename?: 'holdings', fa2_address: string, token?: { __typename?: 'tokens', name?: string | null, description?: string | null, fa2_address: string } | null }> };
 
+export type VerifyOwnershipQueryVariables = Exact<{
+  contractAddress: Scalars['String'];
+  walletAddress: Scalars['String'];
+}>;
 
+
+export type VerifyOwnershipQuery = { __typename?: 'query_root', holdings: Array<{ __typename?: 'holdings', fa2_address: string, token?: { __typename?: 'tokens', name?: string | null } | null }> };
+
+
+export const GetNftCollectionDocument = gql`
+    query getNFTCollection($contractAddress: String!) {
+  tokens(where: {fa2_address: {_eq: $contractAddress}}) {
+    fa2_address
+    name
+  }
+}
+    `;
 export const GetNfTsDocument = gql`
     query getNFTs($walletAddress: String!) {
   holdings(where: {holder_address: {_eq: $walletAddress}}) {
@@ -4634,6 +4657,18 @@ export const GetNfTsDocument = gql`
   }
 }
     `;
+export const VerifyOwnershipDocument = gql`
+    query verifyOwnership($contractAddress: String!, $walletAddress: String!) {
+  holdings(
+    where: {fa2_address: {_eq: $contractAddress}, holder_address: {_eq: $walletAddress}}
+  ) {
+    fa2_address
+    token {
+      name
+    }
+  }
+}
+    `;
 
 export type SdkFunctionWrapper = <T>(action: (requestHeaders?:Record<string, string>) => Promise<T>, operationName: string, operationType?: string) => Promise<T>;
 
@@ -4642,8 +4677,14 @@ const defaultWrapper: SdkFunctionWrapper = (action, _operationName, _operationTy
 
 export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
   return {
+    getNFTCollection(variables: GetNftCollectionQueryVariables, requestHeaders?: Dom.RequestOptions["requestHeaders"]): Promise<GetNftCollectionQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetNftCollectionQuery>(GetNftCollectionDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getNFTCollection', 'query');
+    },
     getNFTs(variables: GetNfTsQueryVariables, requestHeaders?: Dom.RequestOptions["requestHeaders"]): Promise<GetNfTsQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetNfTsQuery>(GetNfTsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getNFTs', 'query');
+    },
+    verifyOwnership(variables: VerifyOwnershipQueryVariables, requestHeaders?: Dom.RequestOptions["requestHeaders"]): Promise<VerifyOwnershipQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<VerifyOwnershipQuery>(VerifyOwnershipDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'verifyOwnership', 'query');
     }
   };
 }

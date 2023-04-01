@@ -1,0 +1,8 @@
+query verifyOwnership($contractAddress: String!, $walletAddress: String!) {
+  holdings(where: {fa2_address: {_eq: $contractAddress}, holder_address: {_eq: $walletAddress}}) {
+    fa2_address
+    token {
+      name
+    }
+  }
+}
