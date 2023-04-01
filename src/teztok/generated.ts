@@ -4621,6 +4621,14 @@ export type GetNftCollectionQueryVariables = Exact<{
 
 export type GetNftCollectionQuery = { __typename?: 'query_root', tokens: Array<{ __typename?: 'tokens', fa2_address: string, name?: string | null }> };
 
+export type GetNftMetadataQueryVariables = Exact<{
+  contractAddress: Scalars['String'];
+  tokenId: Scalars['String'];
+}>;
+
+
+export type GetNftMetadataQuery = { __typename?: 'query_root', token?: { __typename?: 'tokens', fa2_address: string, token_id: string, name?: string | null, display_uri?: string | null, thumbnail_uri?: string | null, artifact_uri?: string | null, metadata_uri?: string | null, mime_type?: string | null, metadata_status: string, attributes?: any | null, metadata?: { __typename?: 'token_metadata', data?: any | null, status: string, uri: string } | null } | null };
+
 export type GetNfTsQueryVariables = Exact<{
   walletAddress: Scalars['String'];
 }>;
@@ -4642,6 +4650,27 @@ export const GetNftCollectionDocument = gql`
   tokens(where: {fa2_address: {_eq: $contractAddress}}) {
     fa2_address
     name
+  }
+}
+    `;
+export const GetNftMetadataDocument = gql`
+    query getNFTMetadata($contractAddress: String!, $tokenId: String!) {
+  token: tokens_by_pk(fa2_address: $contractAddress, token_id: $tokenId) {
+    fa2_address
+    token_id
+    name
+    display_uri
+    thumbnail_uri
+    artifact_uri
+    metadata_uri
+    mime_type
+    metadata_status
+    attributes
+    metadata {
+      data
+      status
+      uri
+    }
   }
 }
     `;
@@ -4679,6 +4708,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
   return {
     getNFTCollection(variables: GetNftCollectionQueryVariables, requestHeaders?: Dom.RequestOptions["requestHeaders"]): Promise<GetNftCollectionQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetNftCollectionQuery>(GetNftCollectionDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getNFTCollection', 'query');
+    },
+    getNFTMetadata(variables: GetNftMetadataQueryVariables, requestHeaders?: Dom.RequestOptions["requestHeaders"]): Promise<GetNftMetadataQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetNftMetadataQuery>(GetNftMetadataDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getNFTMetadata', 'query');
     },
     getNFTs(variables: GetNfTsQueryVariables, requestHeaders?: Dom.RequestOptions["requestHeaders"]): Promise<GetNfTsQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetNfTsQuery>(GetNfTsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getNFTs', 'query');

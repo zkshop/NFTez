@@ -1,0 +1,21 @@
+query getNFTMetadata($contractAddress: String!, $tokenId: String!) {
+  token: tokens_by_pk(fa2_address: $contractAddress, token_id: $tokenId) {
+    fa2_address
+    token_id
+    name
+    display_uri
+    thumbnail_uri
+    artifact_uri
+    metadata_uri
+    mime_type
+    
+    metadata_status
+    attributes
+    metadata {
+      data
+      status
+      uri
+    }
+    
+  }
+}
