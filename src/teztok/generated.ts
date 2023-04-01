@@ -4644,6 +4644,15 @@ export type VerifyOwnershipQueryVariables = Exact<{
 
 export type VerifyOwnershipQuery = { __typename?: 'query_root', holdings: Array<{ __typename?: 'holdings', fa2_address: string, token?: { __typename?: 'tokens', name?: string | null } | null }> };
 
+export type VerifyTokenOwnershipQueryVariables = Exact<{
+  contractAddress: Scalars['String'];
+  walletAddress: Scalars['String'];
+  tokenId: Scalars['String'];
+}>;
+
+
+export type VerifyTokenOwnershipQuery = { __typename?: 'query_root', holdings: Array<{ __typename?: 'holdings', token?: { __typename?: 'tokens', fa2_address: string, token_id: string, name?: string | null, symbol?: string | null, attributes?: any | null, metadata?: { __typename?: 'token_metadata', data?: any | null } | null } | null }> };
+
 
 export const GetNftCollectionDocument = gql`
     query getNFTCollection($contractAddress: String!) {
@@ -4698,6 +4707,24 @@ export const VerifyOwnershipDocument = gql`
   }
 }
     `;
+export const VerifyTokenOwnershipDocument = gql`
+    query verifyTokenOwnership($contractAddress: String!, $walletAddress: String!, $tokenId: String!) {
+  holdings(
+    where: {fa2_address: {_eq: $contractAddress}, holder_address: {_eq: $walletAddress}, token_id: {_eq: $tokenId}}
+  ) {
+    token {
+      fa2_address
+      token_id
+      name
+      symbol
+      attributes
+      metadata {
+        data
+      }
+    }
+  }
+}
+    `;
 
 export type SdkFunctionWrapper = <T>(action: (requestHeaders?:Record<string, string>) => Promise<T>, operationName: string, operationType?: string) => Promise<T>;
 
@@ -4717,6 +4744,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     verifyOwnership(variables: VerifyOwnershipQueryVariables, requestHeaders?: Dom.RequestOptions["requestHeaders"]): Promise<VerifyOwnershipQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<VerifyOwnershipQuery>(VerifyOwnershipDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'verifyOwnership', 'query');
+    },
+    verifyTokenOwnership(variables: VerifyTokenOwnershipQueryVariables, requestHeaders?: Dom.RequestOptions["requestHeaders"]): Promise<VerifyTokenOwnershipQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<VerifyTokenOwnershipQuery>(VerifyTokenOwnershipDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'verifyTokenOwnership', 'query');
     }
   };
 }
