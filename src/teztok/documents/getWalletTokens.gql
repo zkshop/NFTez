@@ -1,0 +1,12 @@
+query getNFTs ($walletAddress: String!) {
+  holdings(
+    where: { holder_address: { _eq: $walletAddress } }
+  ) {
+    fa2_address
+    token {
+      name
+      description
+      fa2_address
+    }
+  }
+}

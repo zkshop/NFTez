@@ -1,0 +1,2 @@
+schema: "graphql.schema"
+documents: "src/teztok/documents/**/*.gql"
