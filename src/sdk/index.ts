@@ -1,4 +1,5 @@
 import {
+  getCollectionAttributes,
   getNFTCollection,
   getWalletNFTs,
   verifyOwnership,
@@ -7,6 +8,7 @@ import {
 } from "./functions";
 
 export default {
+  getCollectionAttributes,
   verifyOwnership,
   verifyTokenOwnership,
   getWalletNFTs,

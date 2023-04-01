@@ -4614,6 +4614,13 @@ export enum Tzprofiles_Select_Column {
   Website = 'website'
 }
 
+export type GetCollectionAttributesQueryVariables = Exact<{
+  contractAddress: Scalars['String'];
+}>;
+
+
+export type GetCollectionAttributesQuery = { __typename?: 'query_root', tokens: Array<{ __typename?: 'tokens', attributes?: any | null }> };
+
 export type GetNftCollectionQueryVariables = Exact<{
   contractAddress: Scalars['String'];
 }>;
@@ -4654,6 +4661,13 @@ export type VerifyTokenOwnershipQueryVariables = Exact<{
 export type VerifyTokenOwnershipQuery = { __typename?: 'query_root', holdings: Array<{ __typename?: 'holdings', token?: { __typename?: 'tokens', fa2_address: string, token_id: string, name?: string | null, symbol?: string | null, attributes?: any | null, metadata?: { __typename?: 'token_metadata', data?: any | null } | null } | null }> };
 
 
+export const GetCollectionAttributesDocument = gql`
+    query getCollectionAttributes($contractAddress: String!) {
+  tokens(where: {fa2_address: {_eq: $contractAddress}}) {
+    attributes
+  }
+}
+    `;
 export const GetNftCollectionDocument = gql`
     query getNFTCollection($contractAddress: String!) {
   tokens(where: {fa2_address: {_eq: $contractAddress}}) {
@@ -4733,6 +4747,9 @@ const defaultWrapper: SdkFunctionWrapper = (action, _operationName, _operationTy
 
 export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
   return {
+    getCollectionAttributes(variables: GetCollectionAttributesQueryVariables, requestHeaders?: Dom.RequestOptions["requestHeaders"]): Promise<GetCollectionAttributesQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetCollectionAttributesQuery>(GetCollectionAttributesDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getCollectionAttributes', 'query');
+    },
     getNFTCollection(variables: GetNftCollectionQueryVariables, requestHeaders?: Dom.RequestOptions["requestHeaders"]): Promise<GetNftCollectionQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetNftCollectionQuery>(GetNftCollectionDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getNFTCollection', 'query');
     },

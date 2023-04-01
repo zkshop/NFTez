@@ -1,0 +1,5 @@
+query getCollectionAttributes($contractAddress: String!) {
+  tokens(where: { fa2_address: { _eq: $contractAddress } }) {
+    attributes
+  }
+}
