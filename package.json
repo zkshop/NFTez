@@ -5,8 +5,7 @@
   "scripts": {
     "dev": "ts-node src/index.ts",
     "start": "node index.js",
-    "generate:graphql": "graphql-codegen --config codegen.ts",
-    "generate:grapqhl": "graphql-codegen --config codegen.ts"
+    "generate:graphql": "graphql-codegen --config codegen.ts && plop update-graphql-code"
   },
   "dependencies": {
     "@taquito/taquito": "latest",
@@ -23,6 +22,7 @@
     "@graphql-codegen/typescript-graphql-request": "^4.5.9",
     "@graphql-codegen/typescript-resolvers": "3.1.1",
     "@types/axios": "^0.14.0",
+    "plop": "^3.1.2",
     "ts-node": "^10.9.1",
     "typescript": "^5.0.3"
   }

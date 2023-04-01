@@ -4614,16 +4614,16 @@ export enum Tzprofiles_Select_Column {
   Website = 'website'
 }
 
-export type GetWalletTokensQueryVariables = Exact<{
+export type GetNfTsQueryVariables = Exact<{
   walletAddress: Scalars['String'];
 }>;
 
 
-export type GetWalletTokensQuery = { __typename?: 'query_root', holdings: Array<{ __typename?: 'holdings', fa2_address: string, token?: { __typename?: 'tokens', name?: string | null, description?: string | null, fa2_address: string } | null }> };
+export type GetNfTsQuery = { __typename?: 'query_root', holdings: Array<{ __typename?: 'holdings', fa2_address: string, token?: { __typename?: 'tokens', name?: string | null, description?: string | null, fa2_address: string } | null }> };
 
 
-export const GetWalletTokensDocument = gql`
-    query getWalletTokens($walletAddress: String!) {
+export const GetNfTsDocument = gql`
+    query getNFTs($walletAddress: String!) {
   holdings(where: {holder_address: {_eq: $walletAddress}}) {
     fa2_address
     token {
@@ -4642,8 +4642,8 @@ const defaultWrapper: SdkFunctionWrapper = (action, _operationName, _operationTy
 
 export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
   return {
-    getWalletTokens(variables: GetWalletTokensQueryVariables, requestHeaders?: Dom.RequestOptions["requestHeaders"]): Promise<GetWalletTokensQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetWalletTokensQuery>(GetWalletTokensDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getWalletTokens', 'query');
+    getNFTs(variables: GetNfTsQueryVariables, requestHeaders?: Dom.RequestOptions["requestHeaders"]): Promise<GetNfTsQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetNfTsQuery>(GetNfTsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getNFTs', 'query');
     }
   };
 }

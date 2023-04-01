@@ -15,7 +15,7 @@ const tzkt = axios.create({
 });
 
 const getWalletNFTs = async (walletAddress: string) => {
-  const walletData = getSdk(client).getWalletTokens({ walletAddress });
+  const walletData = getSdk(client).getNFTs({ walletAddress });
 
   return walletData;
 };
