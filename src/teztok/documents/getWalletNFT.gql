@@ -1,4 +1,4 @@
-query getNFTs ($walletAddress: String!) {
+query getWalletNFTs ($walletAddress: String!) {
   holdings(
     where: { holder_address: { _eq: $walletAddress } }
   ) {
@@ -7,6 +7,9 @@ query getNFTs ($walletAddress: String!) {
       name
       description
       fa2_address
+      display_uri
+      artifact_uri
+      mime_type
     }
   }
 }

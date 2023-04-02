@@ -5,10 +5,6 @@ query verifyTokenOwnership($contractAddress: String!, $walletAddress: String!, $
       token_id
       name
       symbol
-      attributes
-      metadata {
-        data
-      }
     }
   }
 }

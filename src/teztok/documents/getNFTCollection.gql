@@ -2,5 +2,10 @@ query getNFTCollection($contractAddress: String!) {
   tokens(where: { fa2_address: { _eq: $contractAddress } }) {
     fa2_address
     name
+    description
+    holdings {
+      holder_address
+      amount
+    }
   }
 }

@@ -4626,7 +4626,7 @@ export type GetNftCollectionQueryVariables = Exact<{
 }>;
 
 
-export type GetNftCollectionQuery = { __typename?: 'query_root', tokens: Array<{ __typename?: 'tokens', fa2_address: string, name?: string | null }> };
+export type GetNftCollectionQuery = { __typename?: 'query_root', tokens: Array<{ __typename?: 'tokens', fa2_address: string, name?: string | null, description?: string | null, holdings: Array<{ __typename?: 'holdings', holder_address: string, amount: any }> }> };
 
 export type GetNftMetadataQueryVariables = Exact<{
   contractAddress: Scalars['String'];
@@ -4636,12 +4636,12 @@ export type GetNftMetadataQueryVariables = Exact<{
 
 export type GetNftMetadataQuery = { __typename?: 'query_root', token?: { __typename?: 'tokens', fa2_address: string, token_id: string, name?: string | null, display_uri?: string | null, thumbnail_uri?: string | null, artifact_uri?: string | null, metadata_uri?: string | null, mime_type?: string | null, metadata_status: string, attributes?: any | null, metadata?: { __typename?: 'token_metadata', data?: any | null, status: string, uri: string } | null } | null };
 
-export type GetNfTsQueryVariables = Exact<{
+export type GetWalletNfTsQueryVariables = Exact<{
   walletAddress: Scalars['String'];
 }>;
 
 
-export type GetNfTsQuery = { __typename?: 'query_root', holdings: Array<{ __typename?: 'holdings', fa2_address: string, token?: { __typename?: 'tokens', name?: string | null, description?: string | null, fa2_address: string } | null }> };
+export type GetWalletNfTsQuery = { __typename?: 'query_root', holdings: Array<{ __typename?: 'holdings', fa2_address: string, token?: { __typename?: 'tokens', name?: string | null, description?: string | null, fa2_address: string, display_uri?: string | null, artifact_uri?: string | null, mime_type?: string | null } | null }> };
 
 export type VerifyOwnershipQueryVariables = Exact<{
   contractAddress: Scalars['String'];
@@ -4658,7 +4658,7 @@ export type VerifyTokenOwnershipQueryVariables = Exact<{
 }>;
 
 
-export type VerifyTokenOwnershipQuery = { __typename?: 'query_root', holdings: Array<{ __typename?: 'holdings', token?: { __typename?: 'tokens', fa2_address: string, token_id: string, name?: string | null, symbol?: string | null, attributes?: any | null, metadata?: { __typename?: 'token_metadata', data?: any | null } | null } | null }> };
+export type VerifyTokenOwnershipQuery = { __typename?: 'query_root', holdings: Array<{ __typename?: 'holdings', token?: { __typename?: 'tokens', fa2_address: string, token_id: string, name?: string | null, symbol?: string | null } | null }> };
 
 
 export const GetCollectionAttributesDocument = gql`
@@ -4673,6 +4673,11 @@ export const GetNftCollectionDocument = gql`
   tokens(where: {fa2_address: {_eq: $contractAddress}}) {
     fa2_address
     name
+    description
+    holdings {
+      holder_address
+      amount
+    }
   }
 }
     `;
@@ -4697,14 +4702,17 @@ export const GetNftMetadataDocument = gql`
   }
 }
     `;
-export const GetNfTsDocument = gql`
-    query getNFTs($walletAddress: String!) {
+export const GetWalletNfTsDocument = gql`
+    query getWalletNFTs($walletAddress: String!) {
   holdings(where: {holder_address: {_eq: $walletAddress}}) {
     fa2_address
     token {
       name
       description
       fa2_address
+      display_uri
+      artifact_uri
+      mime_type
     }
   }
 }
@@ -4731,10 +4739,6 @@ export const VerifyTokenOwnershipDocument = gql`
       token_id
       name
       symbol
-      attributes
-      metadata {
-        data
-      }
     }
   }
 }
@@ -4756,8 +4760,8 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     getNFTMetadata(variables: GetNftMetadataQueryVariables, requestHeaders?: Dom.RequestOptions["requestHeaders"]): Promise<GetNftMetadataQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetNftMetadataQuery>(GetNftMetadataDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getNFTMetadata', 'query');
     },
-    getNFTs(variables: GetNfTsQueryVariables, requestHeaders?: Dom.RequestOptions["requestHeaders"]): Promise<GetNfTsQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetNfTsQuery>(GetNfTsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getNFTs', 'query');
+    getWalletNFTs(variables: GetWalletNfTsQueryVariables, requestHeaders?: Dom.RequestOptions["requestHeaders"]): Promise<GetWalletNfTsQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetWalletNfTsQuery>(GetWalletNfTsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getWalletNFTs', 'query');
     },
     verifyOwnership(variables: VerifyOwnershipQueryVariables, requestHeaders?: Dom.RequestOptions["requestHeaders"]): Promise<VerifyOwnershipQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<VerifyOwnershipQuery>(VerifyOwnershipDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'verifyOwnership', 'query');

@@ -5,9 +5,12 @@ export const verifyTokenOwnership = async (
   walletAddress: string,
   contractAddress: string
 ) => {
-  return client.get.verifyTokenOwnership({
+  const data = await client.get.verifyTokenOwnership({
     contractAddress,
     walletAddress,
     tokenId,
   });
+
+  if (data.holdings.length) return true;
+  return false;
 };
